@@ -4,7 +4,7 @@
     <NuxtLink to="/" class="mb-10 block">
       <NuxtImg src="/logo.svg" alt="" width="100px" class="mx-auto" />
     </NuxtLink>
-    <UiButton>Send</UiButton>
+    <UiButton>Send1</UiButton>
   </aside>
 </template>
 <style scoped></style>
