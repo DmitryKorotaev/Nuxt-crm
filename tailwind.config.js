@@ -14,6 +14,19 @@ module.exports = {
         "2xl": "1400px",
       },
     },
+    fontSize: {
+      xs: "1.08rem",
+      sm: "1.28rem",
+      base: "1.42rem",
+      lg: "1.49rem",
+      xl: "1.66rem",
+      "1.5x1": "1.8rem",
+      "2x1": "2.18rem",
+      "3x1": "2.66rem",
+      "4x1": "3.19rem",
+      "5x1": "4.27rem",
+      "6x1": "5.33rem",
+    },
     extend: {
       transitionDuration: {
         DEFAULT: "333ms",
@@ -22,6 +35,7 @@ module.exports = {
         DEFAULT: "ease-in-out",
       },
       colors: {
+        base: "hsl(var(--foreground))",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
