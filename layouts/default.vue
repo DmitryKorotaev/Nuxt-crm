@@ -1,4 +1,3 @@
-<script lang="ts" setup></script>
 <template>
   <section class="grid" style="min-height: 100vh">
     <LayoutSidebar />
@@ -7,6 +6,9 @@
     </div>
   </section>
 </template>
+
+<script lang="ts" setup></script>
+
 <style scoped>
 .grid {
   display: grid;

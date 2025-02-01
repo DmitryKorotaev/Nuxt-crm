@@ -3,6 +3,7 @@ export default defineNuxtConfig({
   compatibilityDate: "2024-11-01",
   devtools: { enabled: false },
   modules: [
+    "@pinia/nuxt",
     "@nuxt/image",
     "@nuxtjs/tailwindcss",
     "shadcn-nuxt",
@@ -37,5 +38,8 @@ export default defineNuxtConfig({
      * @default "./components/ui"
      */
     componentDir: "./components/ui",
+  },
+  pinia: {
+    storesDirs: ["./store/**"],
   },
 });
