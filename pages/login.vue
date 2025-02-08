@@ -45,37 +45,52 @@ const authStore = useAuthStore();
 const router = useRouter();
 
 const login = async () => {
-  isLoadingstore.set(true);
+  try {
+    isLoadingstore.set(true);
 
-  await account.createEmailPasswordSession(emailRef.value, passwordRef.value);
+    await account.createEmailPasswordSession(emailRef.value, passwordRef.value);
 
-  const response = await account.get();
-  if (response) {
-    authStore.set({
-      email: response.name,
-      name: response.name,
-      status: response.status,
-    });
+    const response = await account.get();
+    if (response) {
+      authStore.set({
+        email: response.name,
+        name: response.name,
+        status: response.status,
+      });
+    }
+
+    emailRef.value = "";
+    passwordRef.value = "";
+    nameRef.value = "";
+
+    await router.push("/");
+    isLoadingstore.set(false);
+  } catch {
+    await router.push("/login");
+    isLoadingstore.set(false);
   }
-
-  emailRef.value = "";
-  passwordRef.value = "";
-  nameRef.value = "";
-
-  await router.push("/");
-  isLoadingstore.set(false);
 };
 
 const register = async () => {
-  isLoadingstore.set(true);
+  try {
+    isLoadingstore.set(true);
 
-  await account.create(
-    uuid(),
-    emailRef.value,
-    passwordRef.value,
-    nameRef.value
-  );
+    const res = await account.create(
+      uuid(),
+      emailRef.value,
+      passwordRef.value,
+      nameRef.value
+    );
+    if (res) {
+      if (res) {
+        console.log(res, "res");
+      }
+    }
 
-  await login();
+    await login();
+  } catch {
+    await router.push("/login");
+    isLoadingstore.set(false);
+  }
 };
 </script>

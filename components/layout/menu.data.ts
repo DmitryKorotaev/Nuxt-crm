@@ -12,12 +12,12 @@ export const MENU_DATA: IMenuItem[] = [
   {
     name: "Products",
     icon: "ep:goods",
-    url: "products",
+    url: "/products",
   },
   {
     name: "Payments",
     icon: "ph:contactless-payment",
-    url: "/payment",
+    url: "/payments",
   },
   {
     name: "Orders",
