@@ -5,6 +5,13 @@ export default defineNuxtConfig({
   modules: [
     "@pinia/nuxt",
     "@nuxt/image",
+    [
+      "@vee-validate/nuxt",
+      {
+        // disable or enable auto imports
+        autoImports: true,
+      },
+    ],
     "@nuxtjs/tailwindcss",
     "shadcn-nuxt",
     "@nuxt/icon",
