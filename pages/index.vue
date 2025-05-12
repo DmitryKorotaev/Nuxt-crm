@@ -1,28 +1,17 @@
 <template>
   <div class="p-10">
-    <h1 class="font-bold text-2x1 md-10">CRM System</h1>
+    <h1 class="font-bold text-2x1 mb-10">CRM System</h1>
     <div v-if="isLoading">Loading....</div>
     <div v-else>
       <div v-if="data">
         <div class="grid grid-cols-5 gap-16">
           <div v-for="(column, index) in data" :key="column.id" class="">
-            <div
-              class="rounded bg-slate-700 py-1 md-2 text-center"
-              v-once
-              v-bind:data-log="console.log(column.id, 'column')"
-            >
+            <div class="rounded bg-slate-700 py-1 px-1 mb-2 text-center">
               {{ column.name }}
             </div>
-            <div v-if="column.id">
-              <KanbanCreateDeal
-                v-once
-                v-bind:data-log="console.log(column.id, 'column')"
-                :status="column.id"
-                :refetch="refetch"
-              />
-            </div>
+            <KanbanCreateDeal :status="column.id" :refetch="refetch" />
             <UiCard
-              class="mt-5"
+              class="mb-3"
               draggable="true"
               v-for="card in column.items"
               :key="card.id"
@@ -33,7 +22,9 @@
                   converCurrency(card.price)
                 }}</UiCardDescription>
               </UiCardHeader>
-              <UiCardContent>{{ card.companyName }}</UiCardContent>
+              <UiCardContent class="text-xs">{{
+                card.companyName
+              }}</UiCardContent>
               <UiCardFooter>{{
                 dayjs(card.$createdAt).format("DD MMMM YYYY")
               }}</UiCardFooter>
@@ -46,18 +37,16 @@
 </template>
 
 <script setup lang="ts">
-import { UiCardDescription } from "#components";
 import type { ICard, IColumn } from "~/components/kanban/kanban.types";
 import { useKanbanQuery } from "~/components/kanban/useKanbanQuery";
 import { converCurrency } from "~/lib/convertCurrency";
 import dayjs from "dayjs";
 
-useSeoMeta({
-  title: "home | CRM system",
-});
-
 const dragCardRef = ref<ICard | null>(null);
 const sourseColumnRef = ref<IColumn | null>(null);
 const { data, isLoading, refetch } = useKanbanQuery();
-watch(data, (value) => console.log(value, "val"));
+
+watch(data, (newVal) => {
+  console.log("Обновились данные", newVal);
+});
 </script>

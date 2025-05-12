@@ -18,7 +18,7 @@ export const KANBAN_DATA: IColumn[] = [
     items: [],
   },
   {
-    id: EnumStatus.producted,
+    id: EnumStatus["produced"],
     name: "Произведено",
     items: [],
   },

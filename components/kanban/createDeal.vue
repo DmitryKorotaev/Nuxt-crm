@@ -1,5 +1,5 @@
 <template>
-  <div class="text-center mb-2">
+  <div class="text-center">
     <button
       class="transition-all opacity-5 hover:opacity-100 hover:text-[#a252c8]"
       @click="isOpenForm = !isOpenForm"
@@ -8,41 +8,41 @@
         v-if="isOpenForm"
         name="radix-icons:arrow-up"
         class="fade-in-100 fade-out-0"
-        size="25"
+        size="35"
       />
       <Icon
         v-else
         name="radix-icons:plus-circled"
         class="fade-in-100 fade-out-0"
-        size="25"
+        size="35"
       />
     </button>
   </div>
   <form v-if="isOpenForm" @submit="onSubmit" class="form">
     <UiInput
       placeholder="Наименование"
-      v-modal="name"
+      v-model="name"
       v-bind="nameAttrs"
       type="text"
       class="input"
     />
     <UiInput
       placeholder="Сумма"
-      v-modal="price"
+      v-model="price"
       v-bind="priceAttrs"
-      type="text"
+      type="number"
       class="input"
     />
     <UiInput
       placeholder="Email"
-      v-modal="customerEmail"
+      v-model="customerEmail"
       v-bind="customerEmailAttrs"
       type="text"
       class="input"
     />
     <UiInput
       placeholder="Компания"
-      v-modal="customerName"
+      v-model="customerName"
       v-bind="customerNameAttrs"
       type="text"
       class="input"
@@ -53,8 +53,8 @@
   </form>
 </template>
 
-<script lang="ts">
-import { Icon, UiInput } from "#components";
+<script setup lang="ts">
+import { useForm } from "vee-validate";
 import { useMutation } from "@tanstack/vue-query";
 import { v4 as uuid } from "uuid";
 import { defineProps } from "vue";
@@ -64,13 +64,13 @@ import type { IDeal } from "~/types/deal.types";
 
 const isOpenForm = ref(false);
 
-// interface IDealFormState extends Pick<IDeal, "name" | "price"> {
-//   customer: {
-//     email: string;
-//     name: string;
-//   };
-//   status: string;
-// }
+interface IDealFormState extends Pick<IDeal, "name" | "price"> {
+  customer: {
+    email: string;
+    name: string;
+  };
+  status: string;
+}
 
 const props = defineProps({
   status: {
@@ -81,30 +81,34 @@ const props = defineProps({
     type: Function,
   },
 });
+const { handleSubmit, defineField, handleReset } = useForm<IDealFormState>({
+  initialValues: { status: props.status || "" },
+});
 console.log(props, "props");
-// console.log(props.status, "status");
-// const { handleSubmit, defineField, handleReset } = useForm<IDealFormState>({
-//   initialValues: { status: props.status || "" },
-// });
 
-// const [name, nameAttrs] = defineField("name");
-// const [price, priceAttrs] = defineField("price");
-// const [customerEmail, customerEmailAttrs] = defineField("customer.email");
-// const [customerName, customerNameAttrs] = defineField("customer.name");
+const [name, nameAttrs] = defineField("name");
+const [price, priceAttrs] = defineField("price");
+const [customerEmail, customerEmailAttrs] = defineField("customer.email");
+const [customerName, customerNameAttrs] = defineField("customer.name");
+const { mutate, isPending } = useMutation({
+  mutationKey: ["create a new deal"],
+  mutationFn: (data: IDealFormState) =>
+    DB.createDocument(DB_ID, COLLECTION_DEALS, uuid(), data),
+  async onSuccess(data) {
+    console.log(data, "data");
+    try {
+      await props.refetch?.(); // безопасно вызвать
+    } catch (err) {
+      console.error("Ошибка при refetch:", err);
+    }
+    handleReset();
+  },
+});
 
-// const { mutate, isPending } = useMutation({
-//   mutationKey: ["create a new deal"],
-//   mutationFn: (data: IDealFormState) =>
-//     DB.createDocument(DB_ID, COLLECTION_DEALS, uuid(), data),
-//   onSuccess(data) {
-//     props.refetch && props.refetch();
-//     handleReset();
-//   },
-// });
-
-// const onSubmit = handleSubmit((values) => {
-//   mutate(values);
-// });
+const onSubmit = handleSubmit((values) => {
+  mutate(values);
+  console.log(values, "values");
+});
 </script>
 
 <style scoped>

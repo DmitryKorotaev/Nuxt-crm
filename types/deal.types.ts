@@ -1,5 +1,5 @@
 export interface IBaseField {
-  $createAt: string;
+  $createdAt: string;
   $id: string;
 }
 export interface ICustomer extends IBaseField {
@@ -23,6 +23,6 @@ export enum EnumStatus {
   "todo" = "todo",
   "to-be-agreed" = "to-be-agreed",
   "in-progress" = "in-progress",
-  "producted" = "producted",
+  "produced" = "produced",
   "done" = "done",
 }
